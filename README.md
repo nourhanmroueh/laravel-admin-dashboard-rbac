@@ -33,35 +33,29 @@ clear structure, and maintainable Laravel code suitable for business application
 
 ---
 
-## ⚙️ Installation
-
-Follow these steps to run the project locally:
-
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate:fresh --seed
-php artisan serve
-
 ### After seeding the database, log in using:
 
-Email: admin@example.com
-Password: password123
+- **Email:** admin@example.com  
+- **Password:** password123  
 
-📸 Screenshots
+---
+
+## 📸 Screenshots
+
 ### Create Product
 ![Create Product](docs/screenshots/create-product.png)
+
 ### Create Category
-![Create Product](docs/screenshots/create-category.png)
-###  Product list
-![Create Product](docs/screenshots/products-list.png)
-###  Archived Product
-![Create Product](docs/screenshots/archived-products.png)
+![Create Category](docs/screenshots/create-category.png)
 
-🎥 Demo Video
+### Product List
+![Product List](docs/screenshots/products-list.png)
 
-A short walkthrough of the admin dashboard and features:
+### Archived Products
+![Archived Products](docs/screenshots/archived-products.png)
 
-👉 Demo Video:
-docs/video/demo.mp4
+---
+
+## 🎥 Demo Video
+
+👉 [Click here to watch the demo video](docs/video/demo.mp4)
