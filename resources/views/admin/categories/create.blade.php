@@ -2,39 +2,78 @@
 
 @section('title', 'Create Category')
 
+@section('content_header')
+    <h1 class="m-0 text-dark">Create Category</h1>
+@endsection
+
 @section('content')
-<h1>Create Category</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<form method="POST" action="{{ route('admin.categories.store') }}">
-    @csrf
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-folder-plus mr-1"></i>
+                    New Category
+                </h3>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Category Name</label>
-        <input
-            type="text"
-            name="name"
-            class="form-control"
-            value="{{ old('name') }}"
-            required
-        >
+            <form method="POST" action="{{ route('admin.categories.store') }}">
+                @csrf
+
+                <div class="card-body">
+
+                    {{-- Category Name --}}
+                    <div class="form-group">
+                        <label for="name">Category Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control @error('name') is-invalid @enderror"
+                            value="{{ old('name') }}"
+                            placeholder="Enter category name"
+                            required
+                        >
+
+                        @error('name')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- Active --}}
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="is_active"
+                                name="is_active"
+                                {{ old('is_active', true) ? 'checked' : '' }}
+                            >
+                            <label class="custom-control-label" for="is_active">
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                {{-- Footer --}}
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save mr-1"></i>
+                        Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+
     </div>
-
-    <div class="form-check mb-3">
-        <input
-            type="checkbox"
-            name="is_active"
-            class="form-check-input"
-            checked
-        >
-        <label class="form-check-label">Active</label>
-    </div>
-
-    <button type="submit" class="btn btn-success">
-        Save
-    </button>
-
-    <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">
-        Cancel
-    </a>
-</form>
+</div>
 @endsection

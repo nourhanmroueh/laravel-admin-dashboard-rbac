@@ -7,20 +7,22 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CategoryController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
+|
+| Redirect root to login.
+|
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Auth Routes
+| Authentication Routes (Laravel Breeze)
 |--------------------------------------------------------------------------
 */
 
@@ -28,40 +30,60 @@ require __DIR__.'/auth.php';
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
-  // Dashboard
-       Route::get('/dashboard', function () {
-    return redirect()->route('admin.products.index');
-})->middleware(['auth'])->name('dashboard');
-Route::middleware(['auth'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
 
-      
+Route::middleware(['auth'])->group(function () {
 
-        // Users (protected by permissions inside controller)
-        Route::resource('users', UserController::class);
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    |
+    | Redirect dashboard to products index.
+    |
+    */
 
-        // Roles
-        Route::resource('roles', RoleController::class);
+    Route::get('/dashboard', function () {
+        return redirect()->route('admin.products.index');
+    })->name('dashboard');
 
-        // Permissions
-        Route::resource('permissions', PermissionController::class);
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
 
-        // Products
-        Route::resource('products', ProductController::class);
-        //categories
-        Route::resource('categories', CategoryController::class);
-        Route::get('products-trashed', [ProductController::class, 'trashed'])
-        ->name('products.trashed');
+    Route::prefix('admin')
+        ->name('admin.')
+        ->group(function () {
 
-        Route::post('products/{id}/restore', [ProductController::class, 'restore'])
-        ->name('products.restore');
-        Route::resource('categories', CategoryController::class);
-            Route::delete( 'products/{product}/force-delete', [ProductController::class, 'forceDelete']
-)->name('products.forceDelete');
-       
-    });
+            // Users
+            Route::resource('users', UserController::class);
+
+            // Roles
+            Route::resource('roles', RoleController::class);
+
+            // Permissions
+            Route::resource('permissions', PermissionController::class);
+
+            // Categories
+            Route::resource('categories', CategoryController::class);
+
+            // Products
+            Route::resource('products', ProductController::class);
+
+            // Trashed products
+            Route::get('products-trashed', [ProductController::class, 'trashed'])
+                ->name('products.trashed');
+
+            // Restore product
+            Route::post('products/{id}/restore', [ProductController::class, 'restore'])
+                ->name('products.restore');
+
+            // Force delete product
+            Route::delete('products/{product}/force-delete', [ProductController::class, 'forceDelete'])
+                ->name('products.forceDelete');
+        });
+});
